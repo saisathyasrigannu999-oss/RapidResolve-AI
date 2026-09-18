@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Incident Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<nav>
+    <div class="logo">⚡ RapidResolve AI</div>
+    <a href="/">Student Portal</a>
+    <a href="/admin">Admin Dashboard</a>
+</nav>
+
+<div class="result-container">
+
+    {% if duplicate %}
+    <div class="duplicate">
+        🔗 POSSIBLE DUPLICATE INCIDENT DETECTED
+    </div>
+    {% else %}
+    <div class="success">
+        ✓ NEW INCIDENT ANALYZED SUCCESSFULLY
+    </div>
+    {% endif %}
+
+    <h1>AI Incident Analysis</h1>
+
+    <p class="subtitle">
+        Our intelligent engine analyzed the submitted report.
+    </p>
+
+    <div class="analysis-grid">
+
+        <div class="analysis-card">
+            <small>INCIDENT ID</small>
+            <h2>#{{ incident.id }}</h2>
+        </div>
+
+        <div class="analysis-card">
+            <small>AI CATEGORY</small>
+            <h2>{{ incident.category }}</h2>
+        </div>
+
+        <div class="analysis-card">
+            <small>LOCATION</small>
+            <h2>📍 {{ incident.location }}</h2>
+        </div>
+
+        <div class="analysis-card">
+            <small>PRIORITY</small>
+            <h2 class="{{ incident.priority|lower }}">
+                {{ incident.priority }}
+            </h2>
+        </div>
+
+        <div class="analysis-card">
+            <small>RESPONSIBLE DEPARTMENT</small>
+            <h2>{{ incident.department }}</h2>
+        </div>
+
+        <div class="analysis-card">
+            <small>RELATED REPORTS</small>
+            <h2>{{ incident.report_count }}</h2>
+        </div>
+
+    </div>
+
+    <div class="ai-box">
+
+        <h2>🤖 AI Decision</h2>
+
+        <div class="confidence">
+            <span>AI Confidence</span>
+            <strong>{{ confidence }}%</strong>
+        </div>
+
+        <div class="confidence-bar">
+            <div style="width: {{ confidence }}%"></div>
+        </div>
+
+        <h3>Why this priority?</h3>
+        <p>{{ reason }}</p>
+
+        <h3>Recommended Action</h3>
+        <p>{{ recommendation }}</p>
+
+    </div>
+
+    {% if duplicate %}
+
+    <div class="duplicate-info">
+        <h2>🔗 Incident Clustering</h2>
+
+        <p>
+            This report was grouped with an existing incident because
+            similar reports already exist for the same category and location.
+        </p>
+
+        <strong>
+            {{ incident.report_count }} related reports are currently linked.
+        </strong>
+    </div>
+
+    {% endif %}
+
+    <div class="next-step">
+
+        <h2>Response Workflow</h2>
+
+        <div class="workflow">
+            <span>✓ Reported</span>
+            →
+            <span>✓ AI Analyzed</span>
+            →
+            <span>✓ Department Assigned</span>
+            →
+            <span>Admin Action</span>
+        </div>
+
+        <a href="/admin">Open Admin Dashboard →</a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

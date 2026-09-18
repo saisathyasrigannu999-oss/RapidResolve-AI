@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RapidResolve AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<nav>
+    <div class="logo">⚡ RapidResolve AI</div>
+    <a href="/admin">Admin Dashboard</a>
+</nav>
+
+<div class="hero">
+
+    <div class="hero-text">
+        <span class="badge">AI-POWERED INCIDENT RESPONSE</span>
+
+        <h1>Report an Issue.<br>
+        <span>Resolve it Faster.</span></h1>
+
+        <p>
+            RapidResolve AI transforms scattered campus complaints
+            into intelligent, prioritized incidents.
+        </p>
+    </div>
+
+    <div class="report-card">
+
+        <h2>🚨 Report a Campus Issue</h2>
+
+        <form action="/report" method="POST" enctype="multipart/form-data">
+
+            <label>Describe the problem</label>
+
+            <textarea
+                name="description"
+                placeholder="Example: There is no water in Block B washrooms..."
+                required></textarea>
+	 
+
+            <label>Upload Evidence Image <span style="color:#888;">(Optional)</span></label>
+
+<input
+    type="file"
+    name="image"
+    accept="image/*"
+    class="file-input">
+<label>Location</label>
+
+            <select name="location" required>
+                <option value="">Select location</option>
+                <option>Block A</option>
+                <option>Block B</option>
+                <option>CSE Lab</option>
+                <option>Library</option>
+                <option>Classroom</option>
+                <option>Hostel</option>
+                <option>Other</option>
+            </select>
+
+            <button type="submit">
+                Analyze Incident →
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<div class="features">
+
+    <div>
+        <h3>🤖 AI Classification</h3>
+        <p>Automatically understands and categorizes reported issues.</p>
+    </div>
+
+    <div>
+        <h3>🔗 Duplicate Detection</h3>
+        <p>Combines multiple reports into one intelligent incident.</p>
+    </div>
+
+    <div>
+        <h3>🚨 Priority Detection</h3>
+        <p>Identifies critical, high, medium and low priority issues.</p>
+    </div>
+
+</div>
+
+</body>
+</html>

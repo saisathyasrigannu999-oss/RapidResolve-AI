@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard - RapidResolve AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<nav>
+    <div class="logo">⚡ RapidResolve AI</div>
+    <a href="/">Student Portal</a>
+</nav>
+
+<div class="dashboard">
+
+    <div class="dashboard-header">
+        <div>
+            <span class="badge">ADMIN CONTROL CENTER</span>
+            <h1>Incident Dashboard</h1>
+            <p>Real-time campus incident monitoring and response.</p>
+        </div>
+    </div>
+
+    {% if crisis_alerts %}
+
+<div class="crisis-panel">
+
+    <div class="crisis-title">
+        🚨 CAMPUS CRISIS ALERT
+    </div>
+
+    <p>
+        RapidResolve AI detected incidents with multiple related reports.
+    </p>
+
+    {% for incident in crisis_alerts %}
+
+    <div class="crisis-item">
+
+        <strong>
+            Incident #{{ incident.id }}
+        </strong>
+
+        <span>
+            {{ incident.category }} — {{ incident.location }}
+        </span>
+
+        <span>
+            {{ incident.report_count }} related reports
+        </span>
+
+        <strong>
+            Priority: {{ incident.priority }}
+        </strong>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endif %}<div class="stats">
+
+        <div class="stat">
+            <span>Total Incidents</span>
+            <strong>{{ total }}</strong>
+        </div>
+
+        <div class="stat critical">
+            <span>Critical</span>
+            <strong>{{ critical }}</strong>
+        </div>
+
+        <div class="stat high">
+            <span>High</span>
+            <strong>{{ high }}</strong>
+        </div>
+
+        <div class="stat medium">
+            <span>Medium</span>
+            <strong>{{ medium }}</strong>
+        </div>
+
+        <div class="stat low">
+            <span>Low</span>
+            <strong>{{ low }}</strong>
+        </div>
+
+    </div>
+
+    <div class="analytics">
+
+    <div class="chart-card">
+
+        <h2>📊 Campus Issue Distribution</h2>
+
+        {% if categories %}
+
+        {% for category, count in categories.items() %}
+
+        <div class="bar-row">
+
+            <div class="bar-label">
+                <span>{{ category }}</span>
+                <strong>{{ count }}</strong>
+            </div>
+
+            <div class="bar">
+                <div style="width: {{ [count * 3, 100] | min }}%;"></div>
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+        {% else %}
+
+        <p>No issue data available yet.</p>
+
+        {% endif %}
+
+    </div>
+
+    <div class="chart-card">
+
+        <h2>🧠 AI System Insights</h2>
+
+        <div class="insight">
+            <span>Active Incidents</span>
+            <strong>{{ total }}</strong>
+        </div>
+
+        <div class="insight">
+            <span>High + Critical</span>
+            <strong>{{ high + critical }}</strong>
+        </div>
+
+        <div class="insight">
+            <span>Potential Crisis</span>
+            <strong>{{ crisis_alerts|length }}</strong>
+        </div>
+
+        <div class="insight">
+            <span>Reports Clustered</span>
+            <strong>
+                {% set clustered = 0 %}
+                {% for incident in incidents %}
+                    {% if incident.report_count > 1 %}
+                        {% set clustered = clustered + incident.report_count %}
+                    {% endif %}
+                {% endfor %}
+                {{ clustered }}
+            </strong>
+        </div>
+
+    </div>
+
+</div><div class="incident-section">
+
+        <h2>Live Incidents</h2>
+
+        {% if incidents %}
+
+        <table>
+
+            <tr>
+                <th>ID</th>
+                <th>Issue</th>
+                <th>Category</th>
+                <th>Location</th>
+                <th>Priority</th>
+                <th>Reports</th>
+                <th>Department</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+
+            {% for incident in incidents %}
+
+            <tr>
+
+                <td>#{{ incident.id }}</td>
+
+                <td>{{ incident.description }}</td>
+
+                <td>{{ incident.category }}</td>
+
+                <td>📍 {{ incident.location }}</td>
+
+                <td>
+                    <span class="priority {{ incident.priority|lower }}">
+                        {{ incident.priority }}
+                    </span>
+                </td>
+
+                <td>{{ incident.report_count }}</td>
+
+                <td>{{ incident.department }}</td>
+
+                <td>
+                    {{ incident.status }}
+                </td>
+
+                <td>
+
+                    {% if incident.status != "In Progress" and incident.status != "Resolved" %}
+
+                    <a class="action"
+                       href="/update/{{ incident.id }}/In%20Progress">
+                       Start
+                    </a>
+
+                    {% elif incident.status == "In Progress" %}
+
+                    <a class="action"
+                       href="/update/{{ incident.id }}/Resolved">
+                       Resolve
+                    </a>
+
+                    {% else %}
+
+                    <span class="resolved">✓ Done</span>
+
+                    {% endif %}
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+        {% else %}
+
+        <div class="empty">
+            No incidents reported yet.
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>
